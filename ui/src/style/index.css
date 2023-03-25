@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+select {
+    font-family: 'FontAwesome', 'Second Font name'
+  }
+.nav-colour{
+    background-color: rgba(34,34,34,255)
+    ;
+}
