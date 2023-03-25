@@ -1,5 +1,5 @@
 import axios from "axios";
-const { nextConfig } = require("../next.config")
+const { config } = require("../config")
 
 /**
  * This is user to get call on Backend server
@@ -7,11 +7,10 @@ const { nextConfig } = require("../next.config")
  * @param {*} params
  * @returns
  */
-export async function get(api: string, params: any) {
-  var response: Partial<Response> = {};
+export async function get(api, params) {
 
   try {
-    const { data } = await axios.get(`${nextConfig.BACKEND_ENDPOINT}${api}`, {
+    const { data } = await axios.get(`${config.env.BACKEND_ENDPOINT}${api}`, {
       params: params,
     });
 
@@ -19,7 +18,7 @@ export async function get(api: string, params: any) {
 
 
 
-  } catch (err: any) {
+  } catch (err) {
     console.log(err);
 
 
@@ -33,14 +32,14 @@ export async function get(api: string, params: any) {
  * @param {*} args
  * @returns
  */
-export async function post(api: string, args: any, header?: any) {
+export async function post(api, args) {
 
   try {
-    const { data } = await axios.post(`${nextConfig.BACKEND_ENDPOINT}${api}`, args, header);
+    console.log(config,`''''''''''''''''''''''''ß`);
+    const { data } = await axios.post(`${config.env.BACKEND_ENDPOINT}${api}`, args);
     return data;
-  } catch (err: any) {
+  } catch (err) {
     console.log(err);
-
     return ({ status: 400, data: {}, message: err.toString() });
   }
 }

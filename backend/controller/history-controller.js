@@ -1,122 +1,148 @@
-const History = require("./../models/history")
-const { Response } = require("../classes")
+const History = require("./../models/history");
+const { Response } = require("../classes");
 
 /**
- * 
- * @param {*} req 
- * @param {*} res 
+ *
+ * @param {*} req
+ * @param {*} res
  */
 module.exports.addAndUpdateHistory = async (req, res) => {
-    const {
-        deviceId,
-        searchValue,
-    } = req.body;
+    const { deviceId, searchValue } = req.body;
+    console.log("deviceId, searchValue",deviceId, searchValue);
     try {
-
         let historyRecord = await History.aggregate([
             {
                 $match: {
-                    deviceId: deviceId
-                }
+                    deviceId: deviceId,
+                },
             },
             {
-                $unwind: "$searchResults"
+                $unwind: "$searchResults",
             },
             {
                 $sort: {
-                    "searchResults.timestamps": -1
-                }
+                    "searchResults.timestamps": -1,
+                },
             },
             {
                 $group: {
                     _id: "$_id",
                     deviceId: {
-                        $first: "$deviceId"
+                        $first: "$deviceId",
                     },
                     searchResults: {
-                        $push: "$searchResults"
-                    }
-                }
-            }
-        ])
+                        $push: "$searchResults",
+                    },
+                },
+            },
+        ]);
         if (historyRecord.length == 0) {
             historyRecord = new History({
                 deviceId,
             });
-            historyRecord.searchResults.push({ search: searchValue })
+            historyRecord.searchResults.push({ search: searchValue });
             await historyRecord.save();
         } else {
-
-            if (historyRecord[0].searchResults.length == 5) {
-                historyRecord[0].searchResults.pop()
-                historyRecord[0].searchResults.push({ search: searchValue })
-            } else {
-
-                historyRecord[0].searchResults.push({ search: searchValue })
-                console.log(searchValue, "historyRecord", historyRecord[0].searchResults);
-
+            const isHashExist = (_historyRecord) => _historyRecord.search == searchValue;
+            index = historyRecord[0].searchResults.findIndex(isHashExist);
+            console.log(searchValue,"index",index);
+            if (index == -1) {
+                if (historyRecord[0].searchResults.length == 5) {
+                    historyRecord[0].searchResults.pop();
+                    historyRecord[0].searchResults.push({ search: searchValue });
+                } else {
+                    historyRecord[0].searchResults.push({ search: searchValue });
+                    console.log(
+                        searchValue,
+                        "historyRecord",
+                        historyRecord[0].searchResults
+                    );
+                }
+            }else{
+                historyRecord[0].searchResults[index].timestamps=new Date()
             }
-            await History.updateOne({
-                deviceId: deviceId
-            }, {
-                searchResults: historyRecord[0].searchResults
-            })
+            await History.updateOne(
+                {
+                    deviceId: deviceId,
+                },
+                {
+                    searchResults: historyRecord[0].searchResults,
+                }
+            );
         }
-        res.send(new Response({ status: 200, message: "Successfully add", data: historyRecord[0] }))
+        res.send(
+            new Response({
+                status: 200,
+                message: "Successfully add",
+                data: historyRecord[0],
+            })
+        );
         // console.log("historyRecord", historyRecord);
     } catch (error) {
         console.log("error", error.message);
-        res.send(new Response({ status: error.statusCode, message: error.message, data: {} }))
+        res.send(
+            new Response({
+                status: error.statusCode,
+                message: error.message,
+                data: {},
+            })
+        );
     }
-
-
 };
 
-
 /**
- * 
- * @param {*} req 
- * @param {*} res 
+ *
+ * @param {*} req
+ * @param {*} res
  */
 module.exports.getSearchHistory = async (req, res) => {
-    const {
-        deviceId,
-    } = req.query;
+    const { deviceId } = req.query;
 
     // console.log("deviceId", deviceId);
     try {
-
         let historyRecord = await History.aggregate([
             {
                 $match: {
-                    deviceId: deviceId
-                }
+                    deviceId: deviceId,
+                },
             },
             {
-                $unwind: "$searchResults"
+                $unwind: "$searchResults",
             },
             {
                 $sort: {
-                    "searchResults.timestamps": -1
-                }
+                    "searchResults.timestamps": -1,
+                },
             },
             {
                 $group: {
                     _id: "$_id",
                     deviceId: {
-                        $first: "$deviceId"
+                        $first: "$deviceId",
                     },
                     searchResults: {
-                        $push: "$searchResults"
-                    }
-                }
-            }
-        ])
+                        $push: "$searchResults",
+                    },
+                },
+            },
+        ]);
         // console.log("historyRecord", historyRecord[0]);
 
-        res.send(new Response({ status: 200, message: "query response", data: historyRecord[0] ? historyRecord[0] : {} }))
+        res.send(
+            new Response({
+                status: 200,
+                message: "query response",
+                data: historyRecord[0] ? historyRecord[0] : {},
+            })
+        );
     } catch (error) {
         console.log("error", error.message);
-        res.send(new Response({ status: error.statusCode, message: error.message, data: historyRecord[0] }))
+        res.send(
+            new Response({
+                status: error.statusCode,
+                message: error.message,
+                data: historyRecord[0],
+            })
+        );
     }
 };

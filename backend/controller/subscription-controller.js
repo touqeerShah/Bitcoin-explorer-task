@@ -131,6 +131,42 @@ module.exports.getSubscription = async ({ isActive }) => {
  * @param {*} req 
  * @param {*} res 
  */
+module.exports.getSubscriptionExist = async (req,res) => {
+    try {
+        const {
+            deviceId,
+            hash
+        } = req.query;
+
+
+        let subscriptionRecord = await Subscription
+            .find({deviceId}, {
+                deviceId: 1,
+                subscription: {
+                    $elemMatch: {
+                        hash: hash
+                    }
+                }
+            }).populate('subscription')
+            .sort({ 'subscription.timestamps': -1 });
+
+
+        // console.log("subscriptionRecord====>", subscriptionRecord);
+        res.send (new Response({ status: 200, message: "query response", data: subscriptionRecord }))
+
+    } catch (error) {
+        console.log("error", error);
+        res.send (new Response({ status: 400, message: error.message, data: {} }))
+
+    }
+};
+
+
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
 module.exports.getSubscriptionBy = async ({ _id }) => {
     try {
 

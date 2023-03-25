@@ -1,17 +1,18 @@
 "use client"
 import React from "react";
 import Select, { components } from "react-select";
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import NotificationMenu from "../Notification/NotificationMenu"
-import { Redirect } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
+import { get } from "../../utils";
 
 export default function Navbar() {
 
   const navigate = useNavigate();
 
   const [hash, setHash] = useState("false");
+  const [notifications, setNotifications] = useState();
   const [notificationMenuOpen, setNotificationMenuOpen] = useState(false);
   const options = [
     { value: "BTC", label: "BTC", icon: "bitcoin.svg" },
@@ -49,9 +50,19 @@ export default function Navbar() {
     }
   };
   useEffect(() => {
+    const fetchData = async () => {
 
-  }, [])
-
+      if (localStorage.getItem("email")) {
+        let notifications = await get("api/history/getNotification", { deviceId: localStorage.getItem("email"), page: 0, isView: false })
+        console.log(notifications);
+        if (notifications.status === 200)
+          setNotifications(notifications.data)
+      }
+    }
+    if (notificationMenuOpen) {
+      fetchData()
+    }
+  }, [notificationMenuOpen]);
 
 
 
@@ -103,28 +114,22 @@ export default function Navbar() {
             <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">
 
               <li className="flex items-center mr-2">
+                {localStorage.getItem("email") &&
+                  <button onClick={() => { setNotificationMenuOpen(!notificationMenuOpen) }} className="relative z-10 block rounded-md bg-white p-2 focus:outline-none">
+                    <svg className="h-5 w-5 text-gray-800" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
+                    </svg>
+                    {notifications?.length > 0 && <div className="absolute top-0 text-white h-5  w-5 font-bold flex justify-center items-center right-0 bottom-auto left-auto translate-x-2/4 -translate-y-1/2 text-xs bg-red-600 rounded-full ">   {notifications?.length}      </div>
+                    }
+                  </button>
 
-                <button onClick={() => { setNotificationMenuOpen(!notificationMenuOpen) }} className="relative z-10 block rounded-md bg-white p-2 focus:outline-none">
-                  <svg className="h-5 w-5 text-gray-800" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
-                  </svg>
-                  <div className="absolute top-0 text-white h-5  w-5 font-bold flex justify-center items-center right-0 bottom-auto left-auto translate-x-2/4 -translate-y-1/2 text-xs bg-red-600 rounded-full ">   12      </div>
-
-                </button>
-
-
+                }
               </li>
-              <li className="flex items-center mr-2">
-
-
-              </li>
-
-
             </ul>
           </div>
         </div >
       </nav >
-      <div className="top-9  right-44 absolute w-32 ">
+      <div className="top-9  right-40 absolute w-32 ">
         <Select
           defaultValue={options[0]}
           options={options}

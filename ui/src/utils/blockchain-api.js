@@ -14,12 +14,12 @@ async function getTransactionDetails(txHash, currency) {
         let confirmations = 0
         let status = data?.block.hasOwnProperty("mempool") ? "Pending" : "Conformed"
         if (status === "Conformed") {
-            let latestBlock = await getLatestBlock();
-            console.log("latestBlock.data",latestBlock.status);
-            if (latestBlock.status !== 200){
-                return new Response({ status: 404, message: localStorage.message, data: {} })
-            }
-            confirmations = latestBlock?.data - data?.block?.height + 1
+            // let latestBlock = await getLatestBlock();
+            // console.log("latestBlock.data",latestBlock.status);
+            // if (latestBlock.status !== 200){
+            //     return new Response({ status: 404, message: localStorage.message, data: {} })
+            // }
+            // confirmations = latestBlock?.data - data?.block?.height + 1
         }
         let transaction = new Transaction({ transactionHash: txHash, receivedTime, status, size, confirmations, totalInputBTC, totalOutputBTC, totalFeesBTC })
         console.log("transaction=== >", transaction);
@@ -67,7 +67,11 @@ async function getUnconfirmedTransactionHash() {
     }
 
 }
-
+/**
+ * This function will return new block number which help me to calculate the block conformiation in transaction but it have 
+ * Cross origin issue when call in app 
+ * @returns 
+ */
 async function getLatestBlock() {
     try {
         const { data } = await axios.get(`${config.env.BLOCKCHAIN_API_ENDPOINT}latestblock&cors=true `, {});

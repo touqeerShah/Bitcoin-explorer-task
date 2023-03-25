@@ -1,10 +1,9 @@
 import React from "react";
-
-// reactstrap components
-// import { Spinner } from "reactstrap";
+import { Link } from "react-router-dom";
 
 // core components
 export default function NotificationMenu(props) {
+
   return (
     <div className="bg-white relative w-full   inset-y10 left-0 z-10    left-0 z-30 justify-center "
     >

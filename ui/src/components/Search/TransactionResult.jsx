@@ -1,13 +1,46 @@
 import React from "react";
 
 import { ellipseAddress } from "../../lib/utilities"
+import { post, get } from "../../utils";
+import { toast } from "react-toastify";
+import { useEffect, useState } from 'react'
+import UserEmail from "../Model/UserEmail";
+
 // components
 
 
 
 export default function TransactionResult(props) {
-    console.log("TransactionResult", props);
+    const [isSubExist, setIsSubExist] = useState(false);
+    const [showModal, setShowModal] = React.useState(false);
 
+    const notifyConformations = async () => {
+        if (localStorage.getItem("email")) {
+            console.log("hash", props.hash);
+            let res = await post("api/subscription/addAndUpdateSubscription", { deviceId: localStorage.getItem("email"), hash: props.hash })
+            if (res.status === 200) {
+                toast.success("Successfully subscription")
+                setIsSubExist(false)
+            } else {
+                toast.error("Some Technical Issue Please Try Later")
+
+            }
+        } else {
+
+        }
+    }
+    useEffect(() => {
+
+        const fetchData = async () => {
+            let checkSubExist = await get("api/subscription/getSubscriptionExist", { deviceId: localStorage.getItem("email"), hash: props.hash })
+            console.log("checkSubExist", checkSubExist);
+            setIsSubExist(checkSubExist.data.length === 0 ? true : false)
+        }
+        if (props.hash) {
+
+            fetchData()
+        }
+    }, [props.hash])
     return (
         <>
             <div className="flex  w-full flex-wrap">
@@ -24,7 +57,7 @@ export default function TransactionResult(props) {
                                 <h3
                                     className={
                                         "font-semibold text-lg " +
-                                        (props.color === "light" ? "text-blueGray-700" : "text-white")
+                                        (props.color === "light" ? "text-white" : "text-white")
                                     }
                                 >
                                     Transactions Details
@@ -107,7 +140,7 @@ export default function TransactionResult(props) {
                                         (props.color === "light"
                                             ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                                             : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")}>
-                                        &nbsp
+                                        { }
                                     </td>
 
                                 </tr>
@@ -122,19 +155,17 @@ export default function TransactionResult(props) {
                                         Transaction status : {props.transactionResult?.status}
                                     </td>
                                     <td className={
-                                        "px-6 align-middle border border-solid py-3 text-xs  border-l-0 border-r-0 whitespace-nowrap  text-left    font-bold" +
-                                        (props.color === "light"
-                                            ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
-                                            : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")}>
-                                        {(props.transactionResult?.status == "Pending") ? <button className="border-0 px-3 px-2-5 my-4 placeholder-blueGray-300 text-blueGray-600 bg-white rounded border-2 text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                        "px-6 align-middle border border-solid py-3 text-xs  border-l-0 border-r-0 whitespace-nowrap  text-left    font-bold"
+                                        + "light bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+                                    }>
+                                        {(isSubExist && props.transactionResult?.status == "Pending") ? <button className=" w-1/2 placeholder-blueGray-300 text-blueGray-600 bg-white rounded border-2 text-sm shadow focus:outline-none "
                                             type="button"
                                             onClick={() => {
-                                                // RequestForVerification()
+                                                notifyConformations()
                                             }}>
                                             Nofity Conformations
-                                        </button> : ""}
+                                        </button> : <span></span>}
                                     </td>
-
                                 </tr>
 
                             </tbody>
@@ -147,6 +178,8 @@ export default function TransactionResult(props) {
                 <div className="w-1/5"></div>
 
             </div>
+            <UserEmail setShowModal={setShowModal} showModal={showModal} title={"Please Enter you email"} message={"Subscription Email is required"} />
+
         </>
     );
 }

@@ -13,9 +13,9 @@ async function getTransactionDetails(txHash, currency) {
         let size = data?.size
         let confirmations = 0
         let status = data?.block.hasOwnProperty("mempool") ? "Pending" : "Conformed"
-        if (status == "Conformed") {
+        if (status === "Conformed") {
             let latestBlock = await getLatestBlock();
-            if (latestBlock.status != 200)
+            if (latestBlock.status !== 200)
                 return latestBlock;
             confirmations = latestBlock?.data - data?.block?.height + 1
         }
@@ -31,9 +31,10 @@ async function getTransactionDetails(txHash, currency) {
 
 async function getAccountDetails(address, currency) {
     try {
+
         const { data } = await axios.get(`${config.env.BLOCKCHAIN_API_ENDPOINT}address/${address}?format=json`, {});
         let unspentBalance = await getUnspentBalance(address, currency)
-        if (unspentBalance.status != 200) {
+        if (unspentBalance.status !== 200) {
             return unspentBalance
         }
         let noConfirmedTransaction = data?.n_tx
@@ -46,7 +47,7 @@ async function getAccountDetails(address, currency) {
         // console.log("transaction=== >", transaction);
         return new Response({ status: 200, message: "Successful fetch Result", data: transaction })
     } catch (error) {
-        // console.log("getAccountDetails");
+        // console.log("getAccountDetails",error);
 
         // console.log(new Response({ status: 404, message: error.message, data: {} }));
         return new Response({ status: 404, message: error.message, data: {} })

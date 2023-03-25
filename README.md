@@ -1,70 +1,94 @@
-# Getting Started with Create React App
+# Blockchain Explorer
+## Problem Statement:
+In this challenge we want you to build a simple app, using either ReactJS or React Native,
+which retrieves address and transaction information from the BTC blockchain. It also allows a
+user to subscribe for changes to specific hashes. Each subscribed hash should generate a
+notification on the UI. Furthermore, the user should be able to select in which currency the
+values should be displayed (USD, EUR or BTC).
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+```
+Bonus points will be awarded for the implementation of a functionality that retrieves the top 5
+searched addresses and transactions.
+```
 
-## Available Scripts
+## Expected Output:
 
-In the project directory, you can run:
+- Address search; (it will be user address and we need to get following details)
+- - Number of confirmed transactions
+- - Total BTC received
+- - Total BTC spent
+- - Total BTC un?pen
+- - Current address balance
 
-### `npm start`
+- Transaction search; (get details about specific transaction with his hash)
+- - Transaction hash
+- - Received time
+- - Status
+- - Size (in bytes)
+- - Num<er of confirmations (the successful act of a?ing a tran?action and ading it to the blockcain)
+- - Total BTC input
+- - Total BTC output
+- - Total fees (paid to process this transaction)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Technology and Framework 
+- NodeJs (Backend with express server and REST API)
+- Frontend React (NextJS Framework)
+- Tailwind (for CSS framework )
+- MongoDB (to store data)
+- Chai and Mocha
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Blockchain Node 
+I used open-source free API to get details for Bitcoin Transactions and address [![ Blockchain.com]()](https://www.blockchain.com/explorer/api/blockchain_api)  [for notification i am using Blockchain.com Websocket](https://www.blockchain.com/explorer/api/api_websocket)
 
-### `npm test`
+```
+// this will return details of user account
+https://blockchain.info/address/bc1qk5pga4z53zf4hm0tqtf9nh3m454fdvwvnmh3z4?format=json
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+// this API will return upSpent Balance 
+https://blockchain.info/unspent?active=bc1qk5pga4z53zf4hm0tqtf9nh3m454fdvwvnmh3z4 
 
-### `npm run build`
+// thus will return details related to transactions
+https://api.blockchain.info/haskoin-store/btc/transaction/089b79b066685df7a03f06d8bc4f66bd05fbb2167301aab2cbd83e2e8ff586f4?format=json
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Test-case for functions response API
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- First check API are Giving response on valid input.
+- Second valid Response on Error and invalid input.
+- Check response type is valid with class we define.
+- Check response have all values are define and valid.
+- Check some expected out from transaction response like size, total input , output  and fee.
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Transaction API Test Result
+File  `/test/blockchain.transactions.test.js` with all test-cases shown below.
+Chai and mocha is used for testing.
+```
+npm run test
+```
+Result :
+```
+   Account
+    ✔ Check API Respond on valid Address hash
+    ✔ Check API Respond on invalid Address hash (335ms)
+    ✔ Check Response Instance
+    ✔ Check Response data is instance of Account class
+    ✔ Total input,output,balance and unspent all should define 
+    ✔ Address is Define  
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+  Transactions
+    ✔ Check API Respond on valid Tx hash
+    ✔ Check API Respond on invalid Tx hash (298ms)
+    ✔ Check Response Instance
+    ✔ Check Response data is instance of Transaction class
+    ✔ Check Transaction Received Time is Date instance
+    ✔ Check no mine status should pending (612ms)
+    ✔ Check mine status should Conformed
+    ✔ Total input,output and fee BTC greater the Zero
+    ✔ Block Size not equal to Zero
+    ✔ confirmations  greater then zero if is status is conformed
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+  16 passing (4s)
+```
