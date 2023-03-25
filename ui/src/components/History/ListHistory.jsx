@@ -3,6 +3,7 @@ import HistoryRow from "./ListRow";
 import UserEmail from "../Model/UserEmail";
 import { get } from "../../utils";
 export default function History(props) {
+    console.log("History", props);
     const [searchHistory, setSearchHistory] = useState();
     const [showModal, setShowModal] = React.useState(false);
 
@@ -101,7 +102,7 @@ export default function History(props) {
                                             color={""}
                                         />
                                     ))}
-                                {searchHistory &&
+                                {!searchHistory &&
                                     <HistoryRow
                                         key={"i"}
                                         hash={""}

@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { get } from "../../utils";
 
-export default function Navbar() {
+export default function Navbar(props) {
 
   const navigate = useNavigate();
 
@@ -16,8 +16,9 @@ export default function Navbar() {
   const [notificationMenuOpen, setNotificationMenuOpen] = useState(false);
   const options = [
     { value: "BTC", label: "BTC", icon: "bitcoin.svg" },
+    { value: "EUR", label: "Euro", icon: "euro.svg" },
     { value: "USD", label: "Dollar", icon: "dollar.svg" },
-    { value: "EUR", label: "Euro", icon: "euro.svg" }
+
 
   ];
 
@@ -135,6 +136,10 @@ export default function Navbar() {
           options={options}
           components={{ Option: IconOption }}
           isSearchable={false}
+          onChange={(e) => {
+            console.log("Select", e);
+            props.setCurrency(e.value)
+          }}
 
         />
 

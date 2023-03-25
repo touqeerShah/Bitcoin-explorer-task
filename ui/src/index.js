@@ -3,10 +3,9 @@ import ReactDOM from 'react-dom/client';
 import './style/index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { Provider } from 'react-redux'
-import store from './redux/store'
+
   // const navigate = useNavigate();
-  const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <App />
 );
@@ -16,9 +15,3 @@ root.render(
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
 
-
-// <React.StrictMode>
-    {/* <Provider store={store}> */}
-  <>  <App /></>
-    {/* </Provider> */}
-  // </React.StrictMode>

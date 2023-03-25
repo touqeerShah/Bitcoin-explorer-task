@@ -5,14 +5,13 @@ import Layout from "./components/layout/Index"
 import {
     createBrowserRouter, 
     createRoutesFromElements,
-    Route, 
-    RouterProvider
+    Route
   } from 'react-router-dom'
 
  export  const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<Layout />}>
-        <Route index element={<History color="light" pageTitle="Search History"  />} />
+        <Route index element={<History color="light" pageTitle="Search History"   />} />
         <Route path="/search/:hash" element={<Search />} />
       </Route>
     )

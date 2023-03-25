@@ -10,7 +10,7 @@ import UserEmail from "../Model/UserEmail";
 
 
 
-export default function TransactionResult(props) {
+export default function Result(props) {
     const [isSubExist, setIsSubExist] = useState(false);
     const [showModal, setShowModal] = React.useState(false);
 
@@ -43,7 +43,7 @@ export default function TransactionResult(props) {
     }, [props.hash])
     return (
         <>
-            <div className="flex  w-full flex-wrap">
+            {props.resultType === "transaction" && <div className="flex  w-full flex-wrap">
                 <div className="w-1/5"></div>
 
                 <div
@@ -84,7 +84,7 @@ export default function TransactionResult(props) {
                                         (props.color === "light"
                                             ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                                             : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")}>
-                                        Timestamp  : {(props.transactionResult?.timestamp)}
+                                        Timestamp  : {(props.result?.timestamp)}
                                     </td>
 
                                 </tr>
@@ -96,14 +96,14 @@ export default function TransactionResult(props) {
                                         (props.color === "light"
                                             ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                                             : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")}>
-                                        Transaction Size : {props.transactionResult?.size}
+                                        Transaction Size : {props.result?.size}
                                     </td>
                                     <td className={
                                         "px-6 align-middle border border-solid py-3 text-xs  border-l-0 border-r-0 whitespace-nowrap  text-left font-bold " +
                                         (props.color === "light"
                                             ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                                             : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")}>
-                                        No Confirmation  : {props.transactionResult?.confirmations}
+                                        No Confirmation  : {props.result?.confirmations}
                                     </td>
 
                                 </tr>
@@ -114,14 +114,14 @@ export default function TransactionResult(props) {
                                         (props.color === "light"
                                             ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                                             : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")}>
-                                        Total Input BTC  : {props.transactionResult?.totalInputBTC}
+                                        Total Input BTC  : {props.result?.totalInputBTC}    {props.currency}
                                     </td>
                                     <td className={
                                         "px-6 align-middle border border-solid py-3 text-xs  border-l-0 border-r-0 whitespace-nowrap  text-left  font-bold " +
                                         (props.color === "light"
                                             ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                                             : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")}>
-                                        Total Output BTC : {props.transactionResult?.totalOutputBTC}
+                                        Total Output BTC : {props.result?.totalOutputBTC}   {props.currency}
                                     </td>
 
                                 </tr>
@@ -133,7 +133,7 @@ export default function TransactionResult(props) {
                                         (props.color === "light"
                                             ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                                             : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")}>
-                                        totalFeesBTC : {props.transactionResult?.totalFeesBTC}
+                                        Total Fees BTC : {props.result?.totalFeesBTC}    {props.currency}
                                     </td>
                                     <td className={
                                         "px-6 align-middle border border-solid py-3 text-xs  border-l-0 border-r-0 whitespace-nowrap  text-left font-bold " +
@@ -152,13 +152,13 @@ export default function TransactionResult(props) {
                                         (props.color === "light"
                                             ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                                             : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")}>
-                                        Transaction status : {props.transactionResult?.status}
+                                        Transaction status : {props.result?.status}
                                     </td>
                                     <td className={
                                         "px-6 align-middle border border-solid py-3 text-xs  border-l-0 border-r-0 whitespace-nowrap  text-left    font-bold"
                                         + "light bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                                     }>
-                                        {(isSubExist && props.transactionResult?.status == "Pending") ? <button className=" w-1/2 placeholder-blueGray-300 text-blueGray-600 bg-white rounded border-2 text-sm shadow focus:outline-none "
+                                        {(isSubExist && props.result?.status === "Pending") ? <button className=" w-1/2 placeholder-blueGray-300 text-blueGray-600 bg-white rounded border-2 text-sm shadow focus:outline-none "
                                             type="button"
                                             onClick={() => {
                                                 notifyConformations()
@@ -178,6 +178,84 @@ export default function TransactionResult(props) {
                 <div className="w-1/5"></div>
 
             </div>
+            } {props.resultType === "account" && <div className="flex  w-full flex-wrap">
+                <div className="w-1/5"></div>
+
+                <div
+                    className={
+                        "relative flex flex-col min-w-0 break-words  w-3/5 	 mb-6  rounded light bg-blueGray-700 text-white"
+                    }
+                >
+                    <div className="rounded-t mb-0 px-4 py-3 border-0">
+                        <div className="flex flex-wrap items-center">
+                            <div className="relative w-full px-4 max-w-full flex-grow flex-1">
+                                <h3
+                                    className={
+                                        "font-semibold text-lg  light  text-white"
+                                    }
+                                >
+                                    Address Details
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="block w-full overflow-x-auto">
+                        {/* Projects table */}
+                        <table className="items-center w-full bg-transparent border-collapse">
+
+                            <tbody>
+                                <tr>
+
+                                    <td className={
+                                        "px-6 align-middle border border-solid py-3 text-xs border-l-0 border-r-0 whitespace-nowrap  text-left font-bold light bg-blueGray-50 text-blueGray-500 border-blueGray-100 "}>
+                                        Address Hash :{ellipseAddress(props?.hash, 15)}
+                                    </td>
+                                    <td className={
+                                        "px-6 align-middle border border-solid py-3 text-xs  border-l-0 border-r-0 whitespace-nowrap  text-left font-bold  light bg-blueGray-50 text-blueGray-500 border-blueGray-100"}>
+                                        No Confirmed Transaction  : {(props.result?.noConfirmedTransaction)}
+                                    </td>
+
+                                </tr>
+
+                                <tr>
+
+                                    <td className={
+                                        "px-6 align-middle border border-solid py-3 text-xs border-l-0 border-r-0 whitespace-nowrap  text-left font-bold  light bg-blueGray-50 text-blueGray-500 border-blueGray-100"}>
+                                        Current Balance : {props.result?.currentBalance}   {props.currency}
+                                    </td>
+                                    <td className={
+                                        "px-6 align-middle border border-solid py-3 text-xs  border-l-0 border-r-0 whitespace-nowrap  text-left font-bold light bg-blueGray-50 text-blueGray-500 border-blueGray-100 "}>
+                                        Total Received  : {props.result?.totalReceived}  {props.currency}
+                                    </td>
+
+                                </tr>
+                                <tr>
+
+                                    <td className={
+                                        "px-6 align-middle border border-solid py-3 text-xs border-l-0 border-r-0 whitespace-nowrap  text-left font-bold  light bg-blueGray-50 text-blueGray-500 border-blueGray-100"}>
+                                        Total Spent  : {props.result?.totalSpent}  {props.currency}
+                                    </td>
+                                    <td className=
+                                        "px-6 align-middle border border-solid py-3 text-xs  border-l-0 border-r-0 whitespace-nowrap  text-left  font-bold light bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+                                    >
+                                        Total UnSpent : {props.result?.totalUnspent}  {props.currency}
+                                    </td>
+
+                                </tr>
+
+
+
+
+                            </tbody>
+                        </table>
+
+
+
+                    </div>
+                </div>
+                <div className="w-1/5"></div>
+
+            </div>}
             <UserEmail setShowModal={setShowModal} showModal={showModal} title={"Please Enter you email"} message={"Subscription Email is required"} />
 
         </>

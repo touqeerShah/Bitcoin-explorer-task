@@ -1,19 +1,21 @@
 import 'react-toastify/dist/ReactToastify.css';
 import { useParams } from "react-router-dom";
-import TransactionResult from "./TransactionResult"
-import AddressResult from "./AddressResult"
+import { useOutletContext } from "react-router-dom";
+
+import Result from "./Result"
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { getTransactionDetails, getAccountDetails, post } from "../../utils";
 import { toast } from "react-toastify";
 export default function Search() {
-    console.log("Search");
     const navigate = useNavigate();
+    const [currency] = useOutletContext();
 
     let { hash } = useParams();
-    const [transactionResult, setTransactionResult] = useState({});
-    const [addressResult, setAddressResult] = useState({});
+    const [result, setResult] = useState({});
+    const [resultType, setResultType] = useState({});
     const [isRequest, setIsRequest] = useState(false);
+    const [isUpdateCurrency, setIsUpdateCurrency] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -29,29 +31,36 @@ export default function Search() {
     }, [])
 
     useEffect(() => {
+        setIsRequest(false)
+        setIsUpdateCurrency(!isUpdateCurrency)
+    }, [currency])
+
+    useEffect(() => {
 
         const fetchData = async () => {
             if (hash.length >= 64) {
                 console.log("args = >", hash, hash.length >= 64);
-                let response = await getTransactionDetails(hash, "USD")
-                if (response.status != 200) {
+                let response = await getTransactionDetails(hash, currency)
+                if (response.status !== 200) {
                     setIsRequest(true)
                     toast.error("Error in data Fetch")
                     navigate("/")
                     return;
                 }
-                setTransactionResult(response)
+                setResult(response)
+                setResultType("transaction")
+
 
             } else {
-                let response = await getAccountDetails(hash, "USD")
-                if (response.status != 200) {
+                let response = await getAccountDetails(hash, currency)
+                if (response.status !== 200) {
                     setIsRequest(true)
                     toast.error(response.message)
                     navigate("/")
                     return;
                 }
-
-                setAddressResult(response)
+                setResult(response)
+                setResultType("account")
             }
             // console.log("getMachineId()", getMachineId());
             if (localStorage.getItem("email")) {
@@ -60,18 +69,17 @@ export default function Search() {
             }
         }
         if (hash && !isRequest) {
-            setTransactionResult({})
-            setAddressResult({})
+            setResult({})
             fetchData()
         }
-    }, [hash])
+
+    }, [hash, isUpdateCurrency])
 
     return (
         <div className=''>
             {/* <ToastContainer /> */}
 
-            {transactionResult.data && < TransactionResult color="light" transactionResult={transactionResult.data} hash={hash} />}
-            {addressResult.data && <AddressResult color="light" addressResult={addressResult.data} hash={hash} />}
+            {result.data && < Result color="light" result={result.data} hash={hash} resultType={resultType} currency={currency} />}
         </div>
     )
 }
