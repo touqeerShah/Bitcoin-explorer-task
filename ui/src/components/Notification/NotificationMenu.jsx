@@ -26,6 +26,15 @@ export default function NotificationMenu(props) {
             ))}
 
         </div>
+        <div className="py-2">
+
+
+          <p className="text-gray-600 text-sm mx-2">
+            <span className="font-bold" href="#">No Notification </span>
+          </p>
+
+
+        </div>
         <Link href="#" className="block bg-gray-800 text-white text-center font-bold py-2">See all notifications</Link>
       </div>}
     </div>);

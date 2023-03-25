@@ -55,7 +55,7 @@ export default function Search() {
                 let response = await getAccountDetails(hash, currency)
                 if (response.status !== 200) {
                     setIsRequest(true)
-                    toast.error(response.message)
+                    toast.error("Error in data Fetch")
                     navigate("/")
                     return;
                 }

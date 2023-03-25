@@ -6,14 +6,16 @@ const helmet = require("helmet");
 const server = require("http").createServer(app);
 const cors = require("cors");
 
-
 var { configObj } = require("./config.js");
 var historyRouter = require("./routes/history-routes");
 var notificationRouter = require("./routes/notification-routes");
 var subscriptionRouter = require("./routes/subscription-routes");
 
-const { loadMongo } = require("./utils/helper")
-const { bitcoinBlockchainLisner } = require("./utils/web-socket")
+const { loadMongo } = require("./utils/helper");
+// this will start web socket client to connect with Blockchain.com
+// websocket server to notify when new block is created the check any subscription
+// which active get change
+const { bitcoinBlockchainLisner } = require("./utils/web-socket");
 /**
  * This used to store values in local storage  of server which help us
  */
@@ -21,7 +23,6 @@ if (typeof localStorage === "undefined" || localStorage === null) {
   var LocalStorage = require("node-localstorage").LocalStorage;
   global.localStorage = new LocalStorage("./scratch");
 }
-
 
 const protocol = "http";
 
@@ -91,23 +92,19 @@ app.use("/api/history", historyRouter);
 app.use("/api/notifications", notificationRouter);
 app.use("/api/subscription", subscriptionRouter);
 
-
 /**
  * Enable server on https with local certificate and key
  */
 
-
-
 const PORT = configObj.PORT || 8081;
 server.listen(PORT, () => {
-  loadMongo()
-  bitcoinBlockchainLisner()
+  loadMongo();
+  bitcoinBlockchainLisner();
   console.info(
     `Please open web browser to access ：${protocol}://${configObj.host}:${PORT}/`
   );
   console.info(`pid is ${process.pid}`);
 });
 
-module.exports = app
+module.exports = app;
 //connect to explorer websocket and become client for Explorer
-

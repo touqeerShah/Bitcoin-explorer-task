@@ -22,7 +22,7 @@ export default function History(props) {
             }
         }
         fetchData()
-    }, []);
+    }, [localStorage.getItem("email")]);
 
     return (
         <>
@@ -96,7 +96,7 @@ export default function History(props) {
                                 {searchHistory && searchHistory?.searchResults &&
                                     searchHistory?.searchResults.map((item, i) => (
                                         <HistoryRow
-                                            key={"i"}
+                                            key={i}
                                             hash={item.search}
                                             time={item.timestamps}
                                             color={""}

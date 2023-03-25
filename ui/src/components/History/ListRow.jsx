@@ -14,7 +14,7 @@ export default function HistoryRow({
                 <td className="  pt-4 pb-4  font-bold align-middle border-l-0 border-r-0 text-sm  whitespace-nowrap ">
                     {time}
                 </td>
-                {hash != "" &&
+                {hash !== "" &&
                     <td className="   pt-4 pb-4  font-bold align-middle border-l-0 border-r-0 text-sm  underline hover:text-blue-500 whitespace-nowrap ">
                         <Link to={`search/${hash}`}>  View</Link>
                     </td>}

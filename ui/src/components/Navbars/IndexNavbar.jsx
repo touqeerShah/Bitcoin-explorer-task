@@ -144,7 +144,7 @@ export default function Navbar(props) {
         />
 
       </div>
-      <div className="top-12 right-8 absolute w-full ">
+      <div className="top-12 right-40 absolute w-full ">
         <NotificationMenu
           notificationMenuOpen={notificationMenuOpen}
           setNotificationMenuOpen={setNotificationMenuOpen}

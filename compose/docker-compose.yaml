@@ -1,0 +1,42 @@
+version: "3.5"
+networks:
+  test:
+
+services:
+  mongodb:
+    # build: ./mongodb
+    image: mongo:latest
+    container_name: bitcoin-mongo
+    command: mongod 
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_PASSWORD: bitcoin
+      MONGO_INITDB_ROOT_USERNAME: bitcoin
+      MONGO_INITDB_DATABASE: admin
+    volumes:
+     - /etc/localtime:/etc/localtime
+    networks:
+      - test
+
+  backend:
+    image: blockchain-ex/blockchain-ex-backend
+    container_name: backend
+    # command: npm run start
+    ports:
+      - 8080:8080
+    networks:
+      - test
+    depends_on:
+      - mongodb      
+
+  ui:
+    image: docker.io/blockchain-ex/blockchain-ex-ui
+    container_name: ui
+    command: npm run start
+    ports:
+      - 3000:3000
+    networks:
+      - test
+    depends_on:
+      - backend          

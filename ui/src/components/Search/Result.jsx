@@ -34,7 +34,7 @@ export default function Result(props) {
         const fetchData = async () => {
             let checkSubExist = await get("api/subscription/getSubscriptionExist", { deviceId: localStorage.getItem("email"), hash: props.hash })
             console.log("checkSubExist", checkSubExist);
-            setIsSubExist(checkSubExist.data.length === 0 ? true : false)
+            setIsSubExist(checkSubExist.data[0].subscription.length === 0 ? true : false)
         }
         if (props.hash) {
 
