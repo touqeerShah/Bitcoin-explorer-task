@@ -219,4 +219,4 @@ Confirmation= current.block -  traction.block +1
 
 ## DEMO
 
-[![Demo Video](./demo.png)](https://youtu.be/SW3w_S5FOTk)
+[![Demo Video](./demo.png)]
