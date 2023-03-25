@@ -8,7 +8,7 @@ const { Response } = require("../classes");
  */
 module.exports.addAndUpdateHistory = async (req, res) => {
     const { deviceId, searchValue } = req.body;
-    console.log("deviceId, searchValue",deviceId, searchValue);
+    // console.log("deviceId, searchValue",deviceId, searchValue);
     try {
         let historyRecord = await History.aggregate([
             {
@@ -45,18 +45,14 @@ module.exports.addAndUpdateHistory = async (req, res) => {
         } else {
             const isHashExist = (_historyRecord) => _historyRecord.search == searchValue;
             index = historyRecord[0].searchResults.findIndex(isHashExist);
-            console.log(searchValue,"index",index);
+            // console.log(searchValue,"index",index);
             if (index == -1) {
                 if (historyRecord[0].searchResults.length == 5) {
                     historyRecord[0].searchResults.pop();
                     historyRecord[0].searchResults.push({ search: searchValue });
                 } else {
                     historyRecord[0].searchResults.push({ search: searchValue });
-                    console.log(
-                        searchValue,
-                        "historyRecord",
-                        historyRecord[0].searchResults
-                    );
+                    
                 }
             }else{
                 historyRecord[0].searchResults[index].timestamps=new Date()

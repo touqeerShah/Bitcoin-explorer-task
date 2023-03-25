@@ -24,41 +24,7 @@ describe("Notifications", async function () {
         assert.equal(response.status, 200);
         assert.equal(response.message, "Successfully add");
     });
-    it("Check update notification isNew status ", async () => {
-        // accountDetails = await addAndUpdateHistory(req, {});   
-        let response;     // console.log(block);
-        // console.log(deviceId);
-        response = await request(app)
-            .get('/api/notifications/getNotification')
-            .query({
-                deviceId,
-                isView: false,
-                page: 0
 
-            });
-        // console.log("ssss", response.body.data);
-
-        let _isNewNotification = response.body.data[0].isNewNotification
-        // console.log("isNewNotification", _isNewNotification);
-        let updateResponse = await request(app)
-            .post('/api/notifications/updateNotification')
-            .send({
-                deviceId,
-                isNewNotification: !_isNewNotification,
-                isView: response.body.data[0].isView
-            });
-        // console.log("updateResponse", updateResponse.body);
-        response = await request(app)
-            .get('/api/notifications/getNotification')
-            .query({
-                deviceId,
-                isView: false
-
-            });
-        assert.equal(updateResponse.body.status, 200);
-        assert.equal(updateResponse.body.message, "Successfully updated");
-        assert.equal(!_isNewNotification, response.body.data[0].isNewNotification);
-    });
     it("Check update notification isNew status ", async () => {
         // accountDetails = await addAndUpdateHistory(req, {});   
         let response;     // console.log(block);
@@ -77,7 +43,7 @@ describe("Notifications", async function () {
             .post('/api/notifications/updateNotification')
             .send({
                 deviceId,
-                isNewNotification: response.body.data[0].isNewNotification,
+                notify: response.body.data[0].notify,
                 isView: !_isView
             });
         // console.log("updateResponse", updateResponse.body);
@@ -94,57 +60,6 @@ describe("Notifications", async function () {
         assert.equal(!_isView, response.body.data[0].isView);
     });
 
-    //     // accountDetails = await addAndUpdateHistory(req, {});   
-    //     let response;     // console.log(block);
-    //     for (let index = 0; index < 6; index++) {
-    //         response = await request(app)
-    //             .post('/api/history/addAndUpdateHistory')
-    //             .send({
-    //                 deviceId: "test",
-    //                 searchValue: index
-    //             });
-    //     }
-    //     assert.equal(response.body.data.searchResults.length, 5);
-    // });
-
-    // it("Check searchResults replace only old record ", async () => {
-    //     let response;     // console.log(block);
-    //     response = await request(app)
-    //         .get('/api/history/getSearchHistory')
-    //         .query({
-    //             deviceId: "test",
-    //         });
-    //     // console.log("response", response.body.data.searchResults);
-    //     let lastSearchResult = response.body.data.searchResults[response.body.data.searchResults.length - 1]
-    //     await request(app)
-    //         .post('/api/history/addAndUpdateHistory')
-    //         .send({
-    //             deviceId: "test",
-    //             searchValue: "new record2"
-    //         });
-    //     response = await request(app)
-    //         .get('/api/history/getSearchHistory')
-    //         .query({
-    //             deviceId: "test",
-    //         });
-
-    //     assert.notEqual(response.body.data.searchResults[response.body.data.searchResults.length - 1], lastSearchResult);
-    // });
-
-    // it("Check get history will give valid response on not existing record", async () => {
-    //     let response;     // console.log(block);
-    //     response = await request(app)
-    //         .get('/api/history/getSearchHistory')
-    //         .query({
-    //             deviceId: "test1",
-    //         });
-    //     assert.equal(response.body.status, 200);
-    //     assert.equal(response.body.message, "query response");
-    //     // assert.equal(response.body.data, {});
-    //     expect(response.body.data).to.deep.equal({});
-
-
-
-    // });
+    // 
 
 });

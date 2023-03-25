@@ -53,15 +53,15 @@ export default function Navbar() {
     const fetchData = async () => {
 
       if (localStorage.getItem("email")) {
-        let notifications = await get("api/history/getNotification", { deviceId: localStorage.getItem("email"), page: 0, isView: false })
-        console.log(notifications);
+        let notifications = await get("api/notifications/getNotification", { deviceId: localStorage.getItem("email"), page: 0, isView: false })
+        console.log("notifications", notifications);
         if (notifications.status === 200)
           setNotifications(notifications.data)
       }
     }
-    if (notificationMenuOpen) {
-      fetchData()
-    }
+
+    fetchData()
+
   }, [notificationMenuOpen]);
 
 
@@ -143,6 +143,7 @@ export default function Navbar() {
         <NotificationMenu
           notificationMenuOpen={notificationMenuOpen}
           setNotificationMenuOpen={setNotificationMenuOpen}
+          notifications={notifications}
         />
       </div>
     </>

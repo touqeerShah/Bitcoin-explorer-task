@@ -16,6 +16,19 @@ export default function Search() {
     const [isRequest, setIsRequest] = useState(false);
 
     useEffect(() => {
+        const fetchData = async () => {
+            console.log("hash", hash);
+            let response = await post("api/notifications/updateNotification", { deviceId: localStorage.getItem("email"), notify: hash, isView: true })
+            if (response.status === 200) {
+                localStorage.removeItem("isView")
+            }
+        }
+        if (localStorage.getItem("isView")) {
+            fetchData()
+        }
+    }, [])
+
+    useEffect(() => {
 
         const fetchData = async () => {
             if (hash.length >= 64) {

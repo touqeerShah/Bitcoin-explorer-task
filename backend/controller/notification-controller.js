@@ -35,14 +35,14 @@ module.exports.updateNotification = async (req, res) => {
     try {
         const {
             deviceId,
-            isNewNotification,
+            notify,
             isView
         } = req.body;
 
         const notifications = await Notifications.findOneAndUpdate({
-            deviceId
+            deviceId,
+            notify
         }, {
-            isNewNotification,
             isView
         });
         res.send(new Response({ status: 200, message: "Successfully updated", data: notifications }))
@@ -71,7 +71,7 @@ module.exports.getNotification = async (req, res) => {
 
         const notifications = await Notifications.find({
             deviceId, isView
-        }).sort({ createdAt: -1 }).limit(25).skip(page);
+        }).sort({ createdAt: -1 }).limit(4).skip(page);
         // console.log("notifications", notifications);
         res.send(new Response({ status: 200, message: "query response", data: notifications }))
 
