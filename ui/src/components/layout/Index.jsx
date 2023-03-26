@@ -14,12 +14,12 @@ export default function Layout() {
 
   return (
     <>
+      {/* here check which currency is selected for conversion */}
       <Navbar setCurrency={setCurrency} />
       <main>
         <section className="absolute inset-y-40 left-0 z-10  items-center  w-full  h-auto		 ">
           <Outlet context={[currency]} />
         </section>
-
       </main>
       <Footer />
 

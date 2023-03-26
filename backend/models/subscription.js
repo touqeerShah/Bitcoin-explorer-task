@@ -4,21 +4,23 @@ const { Schema } = mongoose;
 const { ObjectId } = mongoose.Schema;
 
 const subscription = new Schema({
-    deviceId: {
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  subscription: [
+    {
+      hash: {
         type: String,
-        required: true,
-        unique: true,
+      },
+      isActive: {
+        type: Boolean,
+        default: true,
+      },
+      timestamps: { type: Date, default: Date.now },
     },
-    subscription: [{
-        hash: {
-            type: String,
-        },
-        isActive: {
-            type: Boolean,
-            default: true
-        },
-        timestamps: { type: Date, default: Date.now }
-    }],
+  ],
 });
 
 module.exports = mongoose.model("Subscription", subscription);

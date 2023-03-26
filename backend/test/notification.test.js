@@ -5,13 +5,13 @@ const { v4: uuidv4 } = require("uuid");
 
 const { addNotification } = require("../controller/notification-controller");
 describe("Notifications", async function () {
-  let deviceId = "test1";
+  let email = "test1";
   before(async () => {
-    deviceId = uuidv4();
+    email = uuidv4();
   });
   it("Check new notification is created with valid response", async () => {
     const response = await addNotification({
-      deviceId,
+      email,
       notify: "bc1qk5pga4z53zf4hm0tqtf9nh3m454fdvwvnmh3z4",
     });
     // console.log("response.body", response);
@@ -22,11 +22,11 @@ describe("Notifications", async function () {
   it("Check update notification isNew status ", async () => {
     // accountDetails = await addAndUpdateHistory(req, {});
     let response; // console.log(block);
-    // console.log(deviceId);
+    // console.log(email);
     response = await request(app)
       .get("/api/notifications/getNotification")
       .query({
-        deviceId,
+        email,
         isView: false,
       });
     // console.log(response.body.data);
@@ -36,7 +36,7 @@ describe("Notifications", async function () {
     let updateResponse = await request(app)
       .post("/api/notifications/updateNotification")
       .send({
-        deviceId,
+        email,
         notify: response.body.data[0].notify,
         isView: !_isView,
       });
@@ -44,7 +44,7 @@ describe("Notifications", async function () {
     response = await request(app)
       .get("/api/notifications/getNotification")
       .query({
-        deviceId,
+        email,
         isView: true,
       });
     // console.log(response.body.data);

@@ -11,9 +11,9 @@ const {
 } = require("./../controller/subscription-controller");
 
 describe("Subscription", async function () {
-  let deviceId, hash;
+  let email, hash;
   before(async () => {
-    deviceId = uuidv4();
+    email = uuidv4();
     const { data } = await axios.get(
       `${configObj.BLOCKCHAIN_API_ENDPOINT}unconfirmed-transactions?format=json`,
       {}
@@ -25,7 +25,7 @@ describe("Subscription", async function () {
     const response = await request(app)
       .post("/api/subscription/addAndUpdateSubscription")
       .send({
-        deviceId,
+        email,
         hash,
       });
     // console.log("response.body", response.body);
@@ -37,7 +37,7 @@ describe("Subscription", async function () {
     const response = await request(app)
       .post("/api/subscription/addAndUpdateSubscription")
       .send({
-        deviceId,
+        email,
         hash,
       });
     // console.log("response.body", response.body);
@@ -54,7 +54,7 @@ describe("Subscription", async function () {
     // assert.isAbove(updateResponse.data.length, 0);
   });
   it("Check deactivated Subscription", async () => {
-    const updateResponse = await updateStatusSubscription({ deviceId, hash });
+    const updateResponse = await updateStatusSubscription({ email, hash });
     // console.log("response.body", response.body);
     assert.equal(updateResponse.status, 200);
     assert.equal(updateResponse.message, "update add");

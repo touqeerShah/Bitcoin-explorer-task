@@ -12,7 +12,7 @@ describe("History", async function () {
     const response = await request(app)
       .post("/api/history/addAndUpdateHistory")
       .send({
-        deviceId: "test3",
+        email: "test3",
         searchValue: "bc1qk5pga4z53zf4hm0tqtf9nh3m454fdvwvnmh3z4",
       });
     // console.log("response.body", response.body);
@@ -26,7 +26,7 @@ describe("History", async function () {
       response = await request(app)
         .post("/api/history/addAndUpdateHistory")
         .send({
-          deviceId: "test",
+          email: "test",
           searchValue: uuidv4(),
         });
     }
@@ -38,7 +38,7 @@ describe("History", async function () {
       response = await request(app)
         .post("/api/history/addAndUpdateHistory")
         .send({
-          deviceId: "test",
+          email: "test",
           searchValue: index,
         });
     }
@@ -48,7 +48,7 @@ describe("History", async function () {
   it("Check searchResults replace only old record ", async () => {
     let response; // console.log(block);
     response = await request(app).get("/api/history/getSearchHistory").query({
-      deviceId: "test",
+      email: "test",
     });
     // console.log("response", response.body.data.searchResults);
     let lastSearchResult =
@@ -56,11 +56,11 @@ describe("History", async function () {
         response.body.data.searchResults.length - 1
       ];
     await request(app).post("/api/history/addAndUpdateHistory").send({
-      deviceId: "test",
+      email: "test",
       searchValue: "new record2",
     });
     response = await request(app).get("/api/history/getSearchHistory").query({
-      deviceId: "test",
+      email: "test",
     });
 
     assert.notEqual(
@@ -74,7 +74,7 @@ describe("History", async function () {
   it("Check get history will give valid response on not existing record", async () => {
     let response; // console.log(block);
     response = await request(app).get("/api/history/getSearchHistory").query({
-      deviceId: "test1",
+      email: "test1",
     });
     assert.equal(response.body.status, 200);
     assert.equal(response.body.message, "query response");

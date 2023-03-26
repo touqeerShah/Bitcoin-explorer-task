@@ -1,83 +1,102 @@
-
-const Notifications = require("../models/notification")
-const { Response } = require("../classes")
+const Notifications = require("../models/notification");
+const { Response } = require("../classes");
 
 /**
- * 
- * @param {*} req 
- * @param {*} res 
+ *  add item into notification collection
+ *  this function is call into websocket client
  */
-module.exports.addNotification = async ({ deviceId, notify }) => {
+module.exports.addNotification = async ({ email, notify }) => {
+  try {
+    const notifications = new Notifications({
+      email,
+      notify,
+    });
 
-    try {
-        const notifications = new Notifications({
-            deviceId,
-            notify
-        });
+    await notifications.save();
 
-        await notifications.save();
-
-        return (new Response({ status: 200, message: "Successfully add", data: notifications }))
-        // console.log("historyRecord", historyRecord);
-    } catch (error) {
-        console.log("error", error.message);
-        return (new Response({ status: error.statusCode, message: error.message, data: {} }))
-    }
-
+    return new Response({
+      status: 200,
+      message: "Successfully add",
+      data: notifications,
+    });
+    // console.log("historyRecord", historyRecord);
+  } catch (error) {
+    console.log("error", error.message);
+    return new Response({
+      status: error.statusCode,
+      message: error.message,
+      data: {},
+    });
+  }
 };
 
 /**
- * 
- * @param {*} req 
- * @param {*} res 
+ *  once notification is view by user change status
+ * @param {*} req
+ * @param {*} res
  */
 module.exports.updateNotification = async (req, res) => {
-    try {
-        const {
-            deviceId,
-            notify,
-            isView
-        } = req.body;
+  try {
+    const { email, notify, isView } = req.body;
 
-        const notifications = await Notifications.findOneAndUpdate({
-            deviceId,
-            notify
-        }, {
-            isView
-        });
-        res.send(new Response({ status: 200, message: "Successfully updated", data: notifications }))
-
-    } catch (error) {
-        // console.log("error========>", error.message);
-        res.send(new Response({ status: error.statusCode, message: error.message, data: {} }))
-
-    }
-
-
+    const notifications = await Notifications.findOneAndUpdate(
+      {
+        email,
+        notify,
+      },
+      {
+        isView,
+      }
+    );
+    res.send(
+      new Response({
+        status: 200,
+        message: "Successfully updated",
+        data: notifications,
+      })
+    );
+  } catch (error) {
+    // console.log("error========>", error.message);
+    res.send(
+      new Response({
+        status: error.statusCode,
+        message: error.message,
+        data: {},
+      })
+    );
+  }
 };
 /**
- * 
- * @param {*} req 
- * @param {*} res 
+ *  get all notification which are view or unview based on request
+ * @param {*} req
+ * @param {*} res
  */
 module.exports.getNotification = async (req, res) => {
+  try {
+    const { email, page, isView } = req.query;
 
-    try {
-        const {
-            deviceId,
-            page,
-            isView
-        } = req.query;
-
-        const notifications = await Notifications.find({
-            deviceId, isView
-        }).sort({ createdAt: -1 }).limit(4).skip(page);
-        // console.log("notifications", notifications);
-        res.send(new Response({ status: 200, message: "query response", data: notifications }))
-
-    } catch (error) {
-        res.send(new Response({ status: error.statusCode, message: error.message, data: {} }))
-
-    }
-
+    const notifications = await Notifications.find({
+      email,
+      isView,
+    })
+      .sort({ createdAt: -1 })
+      .limit(4)
+      .skip(page);
+    // console.log("notifications", notifications);
+    res.send(
+      new Response({
+        status: 200,
+        message: "query response",
+        data: notifications,
+      })
+    );
+  } catch (error) {
+    res.send(
+      new Response({
+        status: error.statusCode,
+        message: error.message,
+        data: {},
+      })
+    );
+  }
 };

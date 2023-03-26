@@ -214,10 +214,20 @@ Url -> http://localhost:3000
 No Confirmation : 0 it zero because open API will not all get latest block it have some cors issue when  used in react
 Confirmation= current.block -  traction.block +1 
 ```
+## Flow 
+
+Following are the Sequence diagram which shows the API call sequence between UI, Backend and Blockchain.com Node
+
+### User Request for Details
+[![D1](./public/d1.png)]
+
+
+
+### How Subscription work 
+It show how internal  web-socket client and server get the transaction details and generate notifications.
+[![D2](./public/d2.png)]
+
 
 
 ## DEMO
-
-
-
 [![Demo](./public/demo.png)](https://www.youtube.com/watch?v=SW3w_S5FOTk)

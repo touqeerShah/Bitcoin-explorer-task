@@ -9,13 +9,14 @@ export default function History(props) {
 
     useEffect(() => {
         const fetchData = async () => {
-
+            // check user didn't provide by user then ask for it 
             if (!localStorage.getItem("email")) {
                 console.log("process.env", localStorage.getItem("email"));
 
                 setShowModal(true)
             } else {
-                let _searchHistory = await get("api/history/getSearchHistory", { deviceId: localStorage.getItem("email") })
+                // add search item into DB
+                let _searchHistory = await get("api/history/getSearchHistory", { email: localStorage.getItem("email") })
                 console.log(_searchHistory);
                 if (_searchHistory.status === 200)
                     setSearchHistory(_searchHistory.data)

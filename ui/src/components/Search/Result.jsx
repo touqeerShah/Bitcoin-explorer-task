@@ -15,9 +15,10 @@ export default function Result(props) {
     const [showModal, setShowModal] = React.useState(false);
 
     const notifyConformations = async () => {
+        // if user try to subscription hash then check it email is provide
         if (localStorage.getItem("email")) {
             console.log("hash", props.hash);
-            let res = await post("api/subscription/addAndUpdateSubscription", { deviceId: localStorage.getItem("email"), hash: props.hash })
+            let res = await post("api/subscription/addAndUpdateSubscription", { email: localStorage.getItem("email"), hash: props.hash })
             if (res.status === 200) {
                 toast.success("Successfully subscription")
                 setIsSubExist(false)
@@ -26,13 +27,14 @@ export default function Result(props) {
 
             }
         } else {
+            // ask for email and then subscription
             setShowModal(true)
         }
     }
     useEffect(() => {
-
+        // here check if hash is not already subscription if yes then don't render button
         const fetchData = async () => {
-            let checkSubExist = await get("api/subscription/getSubscriptionExist", { deviceId: localStorage.getItem("email"), hash: props.hash })
+            let checkSubExist = await get("api/subscription/getSubscriptionExist", { email: localStorage.getItem("email"), hash: props.hash })
             console.log("checkSubExist", checkSubExist);
             if (checkSubExist.status === 200) {
                 if (checkSubExist.data.length === 0 || checkSubExist?.data[0].subscription.length === 0) {

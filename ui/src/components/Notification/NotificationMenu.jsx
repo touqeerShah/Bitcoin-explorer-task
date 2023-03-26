@@ -14,6 +14,7 @@ export default function NotificationMenu(props) {
             props.notifications.map((item, i) => (
               <Link to={`search/${item.notify}`}
                 onClick={() => {
+                  // this tell search page the request come from search page change the status
                   localStorage.setItem("isView", item.notify)
                 }}
                 key={i}

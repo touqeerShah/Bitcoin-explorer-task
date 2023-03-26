@@ -19,16 +19,18 @@ export default function Search() {
     useEffect(() => {
         const fetchData = async () => {
             console.log("hash", hash);
-            let response = await post("api/notifications/updateNotification", { deviceId: localStorage.getItem("email"), notify: hash, isView: true })
+            // change status that notification is view
+            let response = await post("api/notifications/updateNotification", { email: localStorage.getItem("email"), notify: hash, isView: true })
             if (response.status === 200) {
                 localStorage.removeItem("isView")
             }
         }
+        // if page routes from notification the update notification to view
         if (localStorage.getItem("isView")) {
             fetchData()
         }
     }, [])
-
+    //check currency is  drop down change then convert value into that currency
     useEffect(() => {
         setIsRequest(false)
         setIsUpdateCurrency(!isUpdateCurrency)
@@ -37,10 +39,12 @@ export default function Search() {
     useEffect(() => {
 
         const fetchData = async () => {
+            // it mean hash is transaction hash else it is address
             if (hash.length >= 64) {
                 console.log("args = >", hash, hash.length >= 64);
+                // get data from blockchain.com api
                 let response = await getTransactionDetails(hash, currency)
-                if (response.status !== 200) {
+                if (response.status !== 200) { // if hash is invalid return error
                     setIsRequest(true)
                     toast.error("Error in data Fetch")
                     navigate("/")
@@ -51,6 +55,7 @@ export default function Search() {
 
 
             } else {
+                // get account details
                 let response = await getAccountDetails(hash, currency)
                 if (response.status !== 200) {
                     setIsRequest(true)
@@ -62,9 +67,10 @@ export default function Search() {
                 setResultType("account")
             }
             // console.log("getMachineId()", getMachineId());
+            // if user give his email then add into search history collection
             if (localStorage.getItem("email")) {
                 console.log("hash", hash);
-                await post("api/history/addAndUpdateHistory", { deviceId: localStorage.getItem("email"), searchValue: hash })
+                await post("api/history/addAndUpdateHistory", { email: localStorage.getItem("email"), searchValue: hash })
             }
         }
         if (hash && !isRequest) {

@@ -14,6 +14,7 @@ export default function Navbar(props) {
   const [hash, setHash] = useState("false");
   const [notifications, setNotifications] = useState();
   const [notificationMenuOpen, setNotificationMenuOpen] = useState(false);
+  // add option for currency option
   const options = [
     { value: "BTC", label: "BTC", icon: "bitcoin.svg" },
     { value: "EUR", label: "Euro", icon: "euro.svg" },
@@ -43,7 +44,7 @@ export default function Navbar(props) {
 
   let _handleKeyDown = (event) => {
 
-
+    // if user press enter the route to search page
     if (event.key === 'Enter') {
       console.log('do validate', hash);
       navigate(`/search/${hash}`);
@@ -52,9 +53,9 @@ export default function Navbar(props) {
   };
   useEffect(() => {
     const fetchData = async () => {
-
+      // if user email exist then  get it load it notifications
       if (localStorage.getItem("email")) {
-        let notifications = await get("api/notifications/getNotification", { deviceId: localStorage.getItem("email"), page: 0, isView: false })
+        let notifications = await get("api/notifications/getNotification", { email: localStorage.getItem("email"), page: 0, isView: false })
         console.log("notifications", notifications);
         if (notifications.status === 200)
           setNotifications(notifications.data)
@@ -130,6 +131,7 @@ export default function Navbar(props) {
           </div>
         </div >
       </nav >
+      {/* drop down fro currency option */}
       <div className="top-9  right-40 absolute w-32 ">
         <Select
           defaultValue={options[0]}
@@ -144,6 +146,7 @@ export default function Navbar(props) {
         />
 
       </div>
+      {/* open modal for notifications menu  */}
       <div className="top-12 right-40 absolute w-full ">
         <NotificationMenu
           notificationMenuOpen={notificationMenuOpen}

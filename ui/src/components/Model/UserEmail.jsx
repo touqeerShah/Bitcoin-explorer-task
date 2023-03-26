@@ -12,6 +12,7 @@ const validate = (values) => {
 
     return errors
 }
+// here we check email is valid or not
 export default function UserEmail(props) {
     const formik = useFormik({
         initialValues: {
