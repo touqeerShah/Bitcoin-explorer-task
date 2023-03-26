@@ -31,16 +31,17 @@ export default function History(props) {
                 <div className="w-1/5"></div>
                 <div
                     className={
-                        "  justify-between flex-col min-w-0 break-words  w-3/5 		  shadow-xl rounded " +
+                        "  justify-between flex-col min-w-0 break-words  w-3/5 shadow-xl rounded " +
                         (props.color === "light"
                             ? "bg-white"
                             : "bg-blueGray-700 text-white")
                     }
                 >
-                    <div className="rounded-t mb-0 px-4 w-full py-3 border-0">
+                    <div className="rounded-t mb-0 px-4 w-full  py-3 border-0">
                         <div className="flex float-left w-9/12	 flex-wrap items-center">
-                            <div className="relative px-2 mb-3 max-w-full flex-grow flex-1">
+                            <div className="relative px-2 mb-3  max-w-full flex-grow flex-1">
                                 <h3
+                                    data-testid="history-title"
                                     className={
                                         "font-semibold text-lg " +
                                         (props.color === "light"
