@@ -22,8 +22,6 @@ describe("Subscription", async function () {
     hash = data.txs[0]["hash"];
   });
   it("Add new hash in user Subscription", async () => {
-    // console.log("hash", hash);
-    // accountDetails = await addAndUpdateHistory(req, {});        // console.log(block);
     const response = await request(app)
       .post("/api/subscription/addAndUpdateSubscription")
       .send({

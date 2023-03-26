@@ -178,12 +178,11 @@ It will build both images
 - docker.io/blockchain-ex/blockchain-ex-ui
 
 ```
-
-./build.sh
+../script/build.sh
 
 To start app run container with following commands
 
-./run.sh
+./script/run.sh
 
 or 
 docker-compose -f ./compose/docker-compose.yaml up -d backend ui
