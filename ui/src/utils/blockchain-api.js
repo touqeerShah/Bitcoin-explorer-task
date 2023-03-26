@@ -1,7 +1,7 @@
 import axios from "axios";
-const { Response, Transaction, Account } = require("../classes");
-const { config } = require("../config");
-const { getTotalBTC, epochToDate, btcFiat } = require("./../lib");
+import { Response, Transaction, Account } from "../classes";
+import { config } from "../config";
+import { getTotalBTC, epochToDate, btcFiat } from "./../lib";
 /**
  *
  * @param {*} txHash what you want to search

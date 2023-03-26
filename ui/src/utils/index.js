@@ -1,4 +1,4 @@
-const { getTransactionDetails, getUnconfirmedTransactionHash, getAccountDetails } = require("./blockchain-api")
-const { post, get } = require("./backend-api")
+import { getTransactionDetails, getAccountDetails } from "./blockchain-api";
+import { post, get } from "./backend-api";
 
-module.exports = { getTransactionDetails, getUnconfirmedTransactionHash, getAccountDetails,post, get }
+export { getTransactionDetails, getAccountDetails, post, get };

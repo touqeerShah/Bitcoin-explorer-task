@@ -3,11 +3,11 @@
  * @param {*} totalObject
  * @returns  total amount in that object tranactions
  */
-function getTotalBTC(totalObject) {
+export function getTotalBTC(totalObject) {
   let total = 0;
   totalObject?.forEach((element) => {
     total += element?.value;
   });
   return total;
 }
-module.exports = { getTotalBTC };
+// module.exports = { getTotalBTC };

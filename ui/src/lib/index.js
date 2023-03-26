@@ -1,5 +1,5 @@
-const { getTotalBTC } = require("./get-total-btc");
-const { epochToDate } = require("./date-converter")
-const { btcFiat } = require("./btc-fiat-converter")
+export { getTotalBTC } from "./get-total-btc";
+export { epochToDate } from "./date-converter";
+export { btcFiat } from "./btc-fiat-converter";
 
-module.exports = { getTotalBTC, epochToDate, btcFiat }
+// export = { getTotalBTC, epochToDate, btcFiat };

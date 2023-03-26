@@ -3,7 +3,7 @@
  * @param {*} time
  * @returns
  */
-function epochToDate(time) {
+export function epochToDate(time) {
   let strDate = "";
   if (time) {
     const unixEpochTimeMS = time * 1000;
@@ -14,5 +14,3 @@ function epochToDate(time) {
   }
   return strDate;
 }
-
-module.exports = { epochToDate };

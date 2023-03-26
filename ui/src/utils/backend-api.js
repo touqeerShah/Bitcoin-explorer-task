@@ -1,5 +1,5 @@
 import axios from "axios";
-const { config } = require("../config")
+import { config } from "../config";
 
 /**
  * This is user to get call on Backend server
@@ -8,21 +8,16 @@ const { config } = require("../config")
  * @returns
  */
 export async function get(api, params) {
-
   try {
     const { data } = await axios.get(`${config.env.BACKEND_ENDPOINT}${api}`, {
       params: params,
     });
 
     return data;
-
-
-
   } catch (err) {
     console.log(err);
 
-
-    return ({ status: 400, data: {}, message: err.toString() });
+    return { status: 400, data: {}, message: err.toString() };
   }
 }
 
@@ -33,15 +28,15 @@ export async function get(api, params) {
  * @returns
  */
 export async function post(api, args) {
-
   try {
-    console.log(config,`''''''''''''''''''''''''ß`);
-    const { data } = await axios.post(`${config.env.BACKEND_ENDPOINT}${api}`, args);
+    console.log(config, `''''''''''''''''''''''''ß`);
+    const { data } = await axios.post(
+      `${config.env.BACKEND_ENDPOINT}${api}`,
+      args
+    );
     return data;
   } catch (err) {
     console.log(err);
-    return ({ status: 400, data: {}, message: err.toString() });
+    return { status: 400, data: {}, message: err.toString() };
   }
 }
-
-

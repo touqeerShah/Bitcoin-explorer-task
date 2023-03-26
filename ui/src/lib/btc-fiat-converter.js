@@ -1,11 +1,11 @@
-const { satoshisToFiat } = require("bitcoin-conversion");
+import { satoshisToFiat } from "bitcoin-conversion";
 /**
  *
  * @param {*} satoshis value of btc
  * @param {*} currency which fiat currency
  * @returns
  */
-async function btcFiat(satoshis, currency) {
+export async function btcFiat(satoshis, currency) {
   let fiatCurrency = 0;
   try {
     fiatCurrency = await satoshisToFiat(satoshis, currency);
@@ -15,4 +15,4 @@ async function btcFiat(satoshis, currency) {
   }
 }
 
-module.exports = { btcFiat };
+// module.exports = { btcFiat };
