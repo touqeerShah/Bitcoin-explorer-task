@@ -36,7 +36,7 @@ searched addresses and transactions.
 - Tailwind (for CSS framework )
 - MongoDB (to store data)
 - Chai and Mocha
-
+- Docker and Shell (run the service)
 ## Blockchain Node 
 I used open-source free API to get details for Bitcoin Transactions and address [![ Blockchain.com]()](https://www.blockchain.com/explorer/api/blockchain_api)  [for notification i am using Blockchain.com Websocket](https://www.blockchain.com/explorer/api/api_websocket)
 
